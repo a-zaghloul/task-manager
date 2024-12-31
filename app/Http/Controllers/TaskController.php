@@ -30,8 +30,6 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoretaskRequest $request) {
-        // $request->validate(['title' => 'required']);
-        // Task::create($request->only('title'));
         Task::create($request->input());
         return redirect('/');
     }
@@ -56,7 +54,11 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdatetaskRequest $request, Task $task) {
-        $task->update(['completed' => $request->has('completed')]);
+        $request->has('completed') == 1 ? $completedAt = now()->format('Y-m-d') : $completedAt = $task->completed_at;
+        $task->update([
+            'completed' => $request->has('completed'),
+            'completed_at' => $completedAt,
+        ]);
         return redirect('/');
     }
 

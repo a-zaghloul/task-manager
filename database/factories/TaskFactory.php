@@ -19,8 +19,9 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->word(),
             'description' => fake()->sentence(3),
-            'due_date' => fake()->dateTimeBetween('tomorrow', '+1 year')->format('Y-m-d'),
-            'completed' => fake()->boolean(),
+            'due_date' => $dueDate = fake()->dateTimeBetween('tomorrow', '+1 year')->format('Y-m-d'),
+            'completed' => $completed = fake()->boolean(),
+            'completed_at' => $completed ? $dueDate : null,
         ];
     }
 }
