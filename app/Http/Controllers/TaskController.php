@@ -54,9 +54,13 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdatetaskRequest $request, Task $task) {
-        $request->has('completed') == 1 ? $completedAt = now()->format('Y-m-d') : $completedAt = $task->completed_at;
+
+        $completed = !$task->completed;
+
+        // $request->has('completed') == 1 ? $completedAt = now()->format('Y-m-d') : $completedAt = $task->completed_at;
+        $completed ? $completedAt = now()->format('Y-m-d') : $completedAt = $task->completed_at;
         $task->update([
-            'completed' => $request->has('completed'),
+            'completed' => $completed,
             'completed_at' => $completedAt,
         ]);
         return redirect('/');
