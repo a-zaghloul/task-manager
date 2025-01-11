@@ -18,6 +18,12 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks', 'completedTasks'));
     }
 
+    public function trashed_tasks()
+    {
+        $trashedTasks = Task::onlyTrashed()->get();
+        return view('tasks.trashed', compact('trashedTasks'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
