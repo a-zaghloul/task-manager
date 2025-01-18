@@ -29,6 +29,19 @@
                 </div>
             </form>
         </div>
+        <div class="card-header">
+            <form method="GET" action="{{ route('tasks.index') }}">
+                <div class="row card-header bg-light border-0">
+                    <div class="col">
+                        <input type="input" name="title" placeholder="Title" id="title" class="form-control" value="{{ request('title') }}">
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-outline-primary" >Filter</button>
+                        <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div class="card-body">
             <table class="table ">
@@ -36,8 +49,16 @@
                 <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Due Date</th>
+                        <th scope="col">
+                            <a href="{{ route('tasks.index', array_merge(request()->all(), ['sortBy' => 'title', 'direction' => request('sortBy') == 'title' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="text-dark text-decoration-none">
+                                Title @if(request('sortBy') == 'title') {{ request('direction') == 'asc' ? '↑' : '↓' }} @endif
+                            </a>
+                        </th>
+                        <th scope="col">
+                            <a href="{{ route('tasks.index', array_merge(request()->all(), ['sortBy' => 'due_date', 'direction' => request('sortBy') == 'due_date' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="text-dark text-decoration-none">
+                                Due Date @if(request('sortBy') == 'due_date') {{ request('direction') == 'asc' ? '↑' : '↓' }} @endif
+                            </a>
+                        </th>
                         <th scope="col"></th>
                     </tr>
                 </thead>

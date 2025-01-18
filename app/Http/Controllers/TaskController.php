@@ -5,17 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoretaskRequest;
 use App\Http\Requests\UpdatetaskRequest;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::where('completed',0)->get();
+        $sortBy = $request->input('sortBy', 'title');  // Default sorting by title
+        $direction = $request->input('direction', 'asc');  // Default ascending order
+        $title = $request->input('title');
+        $tasks = Task::where('completed',0)->orderBy($sortBy, $direction);
+        if ($title) {
+            $tasks->where('title', 'LIKE', '%'.$title.'%');
+        }
+        $tasks = $tasks->get();
         $completedTasks = Task::where('completed',1)->get();
-        return view('tasks.index', compact('tasks', 'completedTasks'));
+        return view('tasks.index', compact('tasks', 'completedTasks', 'sortBy', 'direction'));
     }
 
     public function trashed_tasks()
